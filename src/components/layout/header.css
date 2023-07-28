@@ -1,0 +1,63 @@
+header {
+  height: 90px;
+  display: flex;
+  align-items: center;
+  padding: 60px;
+  color: white;
+  width: 100%;
+  background: #140b06;
+  justify-content: space-between;
+}
+header .logo {
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  color: #fcfef0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+header .logo img {
+  max-width: 100%;
+  height: 60px;
+  text-align: center;
+  object-fit: contain;
+}
+header .logo div {
+  z-index: 999;
+  width: 100%;
+  font-size: 7px;
+  letter-spacing: 12px;
+  text-align: center;
+  display: none;
+}
+
+header .routes {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  font-weight: 200;
+  color: #c38d5f;
+}
+header .routes .route {
+  font-size: 12px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.3s;
+}
+header .routes .route:hover {
+  color: white;
+}
+@media screen and (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    row-gap: 20px;
+  }
+}
