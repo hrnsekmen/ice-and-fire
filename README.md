@@ -33,7 +33,7 @@ This web application allows you to list and filter characters, books, and houses
 
 1. Start the development server:
 
-2. Open your web browser and go to [http://localhost:3000](http://localhost:3000) to see the app.
+2. Open your web browser and go to [https://ice-and-fire-cvzh.onrender.com/houses](https://ice-and-fire-cvzh.onrender.com/houses) to see the app.
 
 3. Use the filters to browse and explore characters, books, and houses from the Game of Thrones series.
 
