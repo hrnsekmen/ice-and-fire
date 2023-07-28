@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getHouses } from "../../app/apiSlice";
-import Checkbox from "../form-elements/Checkbox";
 import PageTitle from "../layout/PageTitle";
+import Pagination from "../pagination/Pagination";
 import House from "./House";
+import HouseFilter from "./HouseFilter";
 const Houses = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
@@ -32,25 +33,14 @@ const Houses = () => {
     <>
       <div className="top">
         <PageTitle>Houses</PageTitle>
-        <div className="pagination">
-          <button
-            onClick={() => {
-              setFilter(!filter);
-            }}
-          >
-            FILTER HOUSES
-          </button>
-          <button disabled={page === 1} onClick={() => setPage(page - 1)}>
-            {"Prev"}
-          </button>
-          <div>{page}</div>
-          <button
-            disabled={houses.length < 2}
-            onClick={() => setPage(page + 1)}
-          >
-            {"Next"}
-          </button>
-        </div>
+        <Pagination
+          title={"FILTER HOUSES"}
+          page={page}
+          setPage={setPage}
+          filter={filter}
+          setFilter={setFilter}
+          data={houses}
+        />
       </div>
       <div className="card-container cards">
         {houses.map((i, k) => (
@@ -63,64 +53,15 @@ const Houses = () => {
           />
         ))}
       </div>
-      <div className={filter ? "filter active detail" : "filter"}>
-        <span
-          className="close"
-          onClick={() => {
-            setFilter(false);
-          }}
-        >
-          X
-        </span>
-        <form
-          className=""
-          onSubmit={(e) => {
-            e.preventDefault();
-            setName(e.target.housename.value);
-          }}
-        >
-          <div className="search">
-            <input
-              onChange={(e) => {
-                if (e.target.value === "") setName();
-              }}
-              type="text"
-              name="housename"
-              placeholder="Type A House Name...(ALGOOD)"
-            />
-            <button type="submit">SEARCH</button>
-          </div>
-          <div className="checkboxes">
-            <Checkbox
-              onChange={(e) => {
-                setName("");
-                setHaswords(e.target.checked);
-                setPage(1);
-              }}
-              label="Has Words"
-              name="hasWords"
-            />
-            <Checkbox
-              onChange={(e) => {
-                setName("");
-                setHasTitles(e.target.checked);
-                setPage(1);
-              }}
-              label="Has Titles"
-              name="hasTitles"
-            />
-            <Checkbox
-              onChange={(e) => {
-                setName("");
-                setHasDiedOut(e.target.checked);
-                setPage(1);
-              }}
-              label="Has Died Out"
-              name="hasDiedOut"
-            />
-          </div>
-        </form>
-      </div>
+      <HouseFilter
+        filter={filter}
+        setFilter={setFilter}
+        setName={setName}
+        setPage={setPage}
+        setHaswords={setHaswords}
+        setHasTitles={setHasTitles}
+        setHasDiedOut={setHasDiedOut}
+      />
     </>
   );
 };

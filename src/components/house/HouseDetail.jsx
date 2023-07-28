@@ -19,7 +19,6 @@ const HouseDetail = () => {
       });
   }, [dispatch, navigate, params]);
   const { house } = useSelector((state) => state.api);
-  console.log(house.currentLord);
   return (
     <>
       <PageTitle>{house.name}</PageTitle>

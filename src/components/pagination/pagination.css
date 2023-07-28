@@ -1,0 +1,32 @@
+/* PAGINATION */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  bottom: 0;
+  color: #c38d5f;
+  font-size: 12px;
+  font-family: inherit;
+}
+.pagination button {
+  width: auto;
+  height: 20px;
+  color: inherit;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #c38d5f;
+}
+.pagination div {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  padding: 10px;
+  place-content: center;
+  border-radius: 50%;
+}

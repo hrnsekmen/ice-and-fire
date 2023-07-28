@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 // eslint-disable-next-line react/prop-types
 const Book = ({ name, authors, url }) => {
   const navigate = useNavigate();
-  console.log(authors);
   return (
     <>
       <div className="card">

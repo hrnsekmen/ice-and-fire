@@ -36,7 +36,6 @@ export const getHouses = createAsyncThunk("getHouses", async (data) => {
         },
       });
     }
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -46,7 +45,6 @@ export const getHouses = createAsyncThunk("getHouses", async (data) => {
 export const getHouse = createAsyncThunk("getHouse", async (id) => {
   try {
     const response = await axios.get(`${baseUrl}/houses/${id}`, {});
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -73,7 +71,6 @@ export const getCharacters = createAsyncThunk("getCharacters", async (data) => {
         },
       });
     }
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -83,7 +80,6 @@ export const getCharacters = createAsyncThunk("getCharacters", async (data) => {
 export const getCharacter = createAsyncThunk("getCharacter", async (id) => {
   try {
     const response = await axios.get(`${baseUrl}/characters/${id}`, {});
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -108,7 +104,6 @@ export const getBooks = createAsyncThunk("getBooks", async (data) => {
         },
       });
     }
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -118,7 +113,6 @@ export const getBooks = createAsyncThunk("getBooks", async (data) => {
 export const getBook = createAsyncThunk("getBook", async (id) => {
   try {
     const response = await axios.get(`${baseUrl}/books/${id}`, {});
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
