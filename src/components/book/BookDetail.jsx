@@ -1,14 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { getBook } from "../../app/apiSlice";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { getBook, getDetail } from "../../app/apiSlice";
 import useFormattedDate from "../../hooks/useFormattedDate";
 import PageTitle from "../layout/PageTitle";
 const BookDetail = () => {
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [characters, setCharacters] = useState([]);
+  const [povCharacters, setPovCharacters] = useState([]);
   useEffect(() => {
     dispatch(getBook(params.id))
       .unwrap()
@@ -17,10 +19,42 @@ const BookDetail = () => {
       })
       .catch((err) => {
         console.log(err);
-        navigate("/houses");
+        navigate("/books");
       });
   }, [dispatch, navigate, params]);
   const { book } = useSelector((state) => state.api);
+  const fetchDetails = async (type, store, urls) => {
+    const detailPromises = urls.map((url) => {
+      return dispatch(getDetail({ type, id: url.split("/").pop() }))
+        .unwrap()
+        .then((res) => {
+          return res;
+        })
+        .catch((err) => {
+          console.log(err);
+          navigate("/books");
+          return null;
+        });
+    });
+    Promise.all(detailPromises).then((results) => {
+      const validResults = results.filter((res) => res !== null);
+      switch (store) {
+        case "characters":
+          setCharacters(validResults);
+          break;
+        case "povCharacters":
+          setPovCharacters(validResults);
+          break;
+        default:
+          break;
+      }
+    });
+  };
+  useEffect(() => {
+    if (book.length === 0) return;
+    fetchDetails("characters", "characters", book.characters);
+    fetchDetails("characters", "povCharacters", book.povCharacters);
+  }, [book]);
   return (
     <>
       <PageTitle>{book.name}</PageTitle>
@@ -62,12 +96,42 @@ const BookDetail = () => {
             <div>{useFormattedDate(book.released)}</div>
           </div>
           <div className="detail-el">
-            <div>CHARACTERS</div>
-            <div className="titles">{book?.characters?.length}</div>
+            <div>CHARACTERS ({characters?.length})</div>
+            {book?.characters ? (
+              <div className="titles">
+                {characters?.map((i, k) => {
+                  return (
+                    <Link
+                      key={k}
+                      to={`/characters/${Number(i.url.split("/").pop())}`}
+                    >
+                      {i.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            ) : (
+              <div />
+            )}
           </div>
           <div className="detail-el">
-            <div>POV CHARACTERS</div>
-            <div className="titles">{book?.povCharacters?.length}</div>
+            <div>POV CHARACTERS ({povCharacters?.length})</div>
+            {book?.povCharacters ? (
+              <div className="titles">
+                {povCharacters?.map((i, k) => {
+                  return (
+                    <Link
+                      key={k}
+                      to={`/characters/${Number(i.url.split("/").pop())}`}
+                    >
+                      {i.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            ) : (
+              <div />
+            )}
           </div>
         </div>
       )}

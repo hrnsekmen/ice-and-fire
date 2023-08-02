@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { getHouse } from "../../app/apiSlice";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { getDetail, getHouse } from "../../app/apiSlice";
 import PageTitle from "../layout/PageTitle";
 const HouseDetail = () => {
+  const [cadetBranches, setCadetBranches] = useState([]);
+  const [swornMembers, setSwornMembers] = useState([]);
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -19,6 +21,39 @@ const HouseDetail = () => {
       });
   }, [dispatch, navigate, params]);
   const { house } = useSelector((state) => state.api);
+  const fetchDetails = async (type, store, urls) => {
+    const detailPromises = urls.map((url) => {
+      return dispatch(getDetail({ type, id: url.split("/").pop() }))
+        .unwrap()
+        .then((res) => {
+          return res;
+        })
+        .catch((err) => {
+          console.log(err);
+          navigate("/houses");
+          return null;
+        });
+    });
+    Promise.all(detailPromises).then((results) => {
+      const validResults = results.filter((res) => res !== null);
+      switch (store) {
+        case "cadetBranches":
+          setCadetBranches(validResults);
+          break;
+        case "swornMembers":
+          setSwornMembers(validResults);
+          break;
+        default:
+          break;
+      }
+    });
+  };
+  useEffect(() => {
+    if (house.length === 0) return;
+    fetchDetails("houses", "cadetBranches", house.cadetBranches);
+    fetchDetails("characters", "swornMembers", house.swornMembers);
+  }, [house]);
+
   return (
     <>
       <PageTitle>{house.name}</PageTitle>
@@ -74,7 +109,7 @@ const HouseDetail = () => {
                 navigate(`/characters/${house.currentLord.split("/").pop()}`);
               }}
             >
-              {house.currentLord === "" ? "-" : "DETAIL"}
+              {house.currentLord === "" ? "" : "DETAIL"}
             </button>
           </div>
 
@@ -92,14 +127,14 @@ const HouseDetail = () => {
                 navigate(`/characters/${house.founder.split("/").pop()}`);
               }}
             >
-              {house.founder === "" ? "-" : "DETAIL"}
+              {house.founder === "" ? "" : "DETAIL"}
             </button>
           </div>
           <div className="detail-el">
             <div>
               FOUNDED <span>(The year that this house was founded)</span>
             </div>
-            <div>{house.founded === "" ? "-" : house.founded}</div>
+            <div>{house.founded === "" ? "" : house.founded}</div>
           </div>
           <div className="detail-el">
             <div>
@@ -112,12 +147,46 @@ const HouseDetail = () => {
                 navigate(`/houses/${house.overlord.split("/").pop()}`);
               }}
             >
-              {house.overlord === "" ? "-" : "DETAIL"}
+              {house.overlord === "" ? "" : "DETAIL"}
             </button>
           </div>
           <div className="detail-el">
-            <div>SWORN MEMBERS</div>
-            <div className="titles">{house?.swornMembers?.length}</div>
+            <div>SWORN MEMBERS ({swornMembers?.length})</div>
+            {house?.swornMembers ? (
+              <div className="titles">
+                {swornMembers?.map((i, k) => {
+                  return (
+                    <Link
+                      key={k}
+                      to={`/characters/${Number(i.url.split("/").pop())}`}
+                    >
+                      {i.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            ) : (
+              <div />
+            )}
+          </div>
+          <div className="detail-el">
+            <div>CADET BRANCHES</div>
+            {house?.cadetBranches ? (
+              <div className="titles">
+                {cadetBranches?.map((i, k) => {
+                  return (
+                    <Link
+                      key={k}
+                      to={`/houses/${Number(i.url.split("/").pop())}`}
+                    >
+                      {i.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            ) : (
+              <div />
+            )}
           </div>
         </div>
       )}

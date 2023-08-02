@@ -14,6 +14,16 @@ const customAxios = axios.create();
 customAxios.defaults.paramsSerializer = function (params) {
   return qs.stringify(params, { encode: true, arrayFormat: "brackets" });
 };
+// GET EXTRA DETAIL
+export const getDetail = createAsyncThunk("getDetail", async (data) => {
+  try {
+    const response = await axios.get(`${baseUrl}/${data.type}/${data.id}`, {});
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+});
 // HOUSE
 export const getHouses = createAsyncThunk("getHouses", async (data) => {
   try {

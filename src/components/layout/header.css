@@ -35,6 +35,7 @@ header .logo div {
 
 header .routes {
   display: flex;
+
   flex-wrap: wrap;
   flex: 1;
   justify-content: flex-end;
@@ -59,5 +60,8 @@ header .routes .route:hover {
     justify-content: center;
     height: auto;
     row-gap: 20px;
+  }
+  header .routes {
+    justify-content: center;
   }
 }

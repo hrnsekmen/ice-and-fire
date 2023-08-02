@@ -268,6 +268,9 @@ button {
   display: flex;
   flex-direction: column;
 }
+.detail .detail-el div:first-child div {
+  color: white !important;
+}
 .detail .detail-el div:first-child span {
   font-size: 8px;
 }
@@ -286,8 +289,18 @@ button {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  font-size: 8px;
-  justify-content: center;
+  gap: 10px;
+  overflow: auto;
+  max-height: 400px;
+}
+.detail .titles a {
+  transition: all 0.3s;
+}
+.detail .titles a:hover {
+  color: white;
+}
+.detail .titles a {
+  cursor: pointer;
 }
 @media screen and (max-width: 768px) {
   .detail {
